@@ -5,6 +5,7 @@ import com.yeldossuly.suleimen.librarymanagement.dto.BookResponseDto;
 import com.yeldossuly.suleimen.librarymanagement.service.YeldossulySuleimenBookService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,9 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/books")
@@ -26,8 +26,16 @@ public class YeldossulySuleimenBookController {
     private final YeldossulySuleimenBookService bookService;
 
     @GetMapping
-    public List<BookResponseDto> getAllBooks() {
-        return bookService.getAllBooks();
+    public Page<BookResponseDto> getAllBooks(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sort,
+            @RequestParam(defaultValue = "asc") String direction,
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) Boolean available
+    ) {
+        return bookService.getAllBooks(page, size, sort, direction, search, categoryId, available);
     }
 
     @GetMapping("/{id}")
