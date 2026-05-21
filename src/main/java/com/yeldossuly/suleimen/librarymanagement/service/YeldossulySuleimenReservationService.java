@@ -5,15 +5,15 @@ import com.yeldossuly.suleimen.librarymanagement.entity.Book;
 import com.yeldossuly.suleimen.librarymanagement.entity.Reservation;
 import com.yeldossuly.suleimen.librarymanagement.entity.User;
 import com.yeldossuly.suleimen.librarymanagement.entity.enums.ReservationStatus;
+import com.yeldossuly.suleimen.librarymanagement.exception.YeldossulySuleimenBadRequestException;
+import com.yeldossuly.suleimen.librarymanagement.exception.YeldossulySuleimenResourceNotFoundException;
 import com.yeldossuly.suleimen.librarymanagement.mapper.YeldossulySuleimenReservationMapper;
 import com.yeldossuly.suleimen.librarymanagement.repository.BookRepository;
 import com.yeldossuly.suleimen.librarymanagement.repository.ReservationRepository;
 import com.yeldossuly.suleimen.librarymanagement.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -46,7 +46,7 @@ public class YeldossulySuleimenReservationService {
         Reservation reservation = findReservation(reservationId);
 
         if (reservation.getStatus() == ReservationStatus.CANCELLED) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Reservation already cancelled");
+            throw new YeldossulySuleimenBadRequestException("Reservation already cancelled");
         }
 
         reservation.setStatus(ReservationStatus.CANCELLED);
@@ -63,16 +63,16 @@ public class YeldossulySuleimenReservationService {
 
     private Reservation findReservation(Long id) {
         return reservationRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Reservation not found"));
+                .orElseThrow(() -> new YeldossulySuleimenResourceNotFoundException("Reservation not found"));
     }
 
     private Book findBook(Long id) {
         return bookRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found"));
+                .orElseThrow(() -> new YeldossulySuleimenResourceNotFoundException("Book not found"));
     }
 
     private User findUser(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+                .orElseThrow(() -> new YeldossulySuleimenResourceNotFoundException("User not found"));
     }
 }

@@ -2,13 +2,12 @@ package com.yeldossuly.suleimen.librarymanagement.service;
 
 import com.yeldossuly.suleimen.librarymanagement.dto.AuthorDto;
 import com.yeldossuly.suleimen.librarymanagement.entity.Author;
+import com.yeldossuly.suleimen.librarymanagement.exception.YeldossulySuleimenResourceNotFoundException;
 import com.yeldossuly.suleimen.librarymanagement.mapper.YeldossulySuleimenAuthorMapper;
 import com.yeldossuly.suleimen.librarymanagement.repository.AuthorRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -53,6 +52,6 @@ public class YeldossulySuleimenAuthorService {
 
     private Author findAuthor(Long id) {
         return authorRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Author not found"));
+                .orElseThrow(() -> new YeldossulySuleimenResourceNotFoundException("Author not found"));
     }
 }

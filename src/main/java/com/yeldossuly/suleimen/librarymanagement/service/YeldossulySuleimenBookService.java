@@ -5,6 +5,8 @@ import com.yeldossuly.suleimen.librarymanagement.dto.BookResponseDto;
 import com.yeldossuly.suleimen.librarymanagement.entity.Author;
 import com.yeldossuly.suleimen.librarymanagement.entity.Book;
 import com.yeldossuly.suleimen.librarymanagement.entity.Category;
+import com.yeldossuly.suleimen.librarymanagement.exception.YeldossulySuleimenDuplicateResourceException;
+import com.yeldossuly.suleimen.librarymanagement.exception.YeldossulySuleimenResourceNotFoundException;
 import com.yeldossuly.suleimen.librarymanagement.mapper.YeldossulySuleimenBookMapper;
 import com.yeldossuly.suleimen.librarymanagement.repository.AuthorRepository;
 import com.yeldossuly.suleimen.librarymanagement.repository.BookRepository;
@@ -16,10 +18,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Set;
 
@@ -67,7 +67,7 @@ public class YeldossulySuleimenBookService {
     @Transactional
     public BookResponseDto createBook(BookRequestDto request) {
         if (bookRepository.existsByIsbn(request.isbn())) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Book with this ISBN already exists");
+            throw new YeldossulySuleimenDuplicateResourceException("Book with this ISBN already exists");
         }
 
         Author author = findAuthor(request.authorId());
@@ -83,7 +83,7 @@ public class YeldossulySuleimenBookService {
         bookRepository.findByIsbn(request.isbn())
                 .filter(existingBook -> !existingBook.getId().equals(id))
                 .ifPresent(existingBook -> {
-                    throw new ResponseStatusException(HttpStatus.CONFLICT, "Book with this ISBN already exists");
+                    throw new YeldossulySuleimenDuplicateResourceException("Book with this ISBN already exists");
                 });
 
         Author author = findAuthor(request.authorId());
@@ -101,17 +101,17 @@ public class YeldossulySuleimenBookService {
 
     private Book findBook(Long id) {
         return bookRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found"));
+                .orElseThrow(() -> new YeldossulySuleimenResourceNotFoundException("Book not found"));
     }
 
     private Author findAuthor(Long id) {
         return authorRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Author not found"));
+                .orElseThrow(() -> new YeldossulySuleimenResourceNotFoundException("Author not found"));
     }
 
     private Category findCategory(Long id) {
         return categoryRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found"));
+                .orElseThrow(() -> new YeldossulySuleimenResourceNotFoundException("Category not found"));
     }
 
     private Pageable createPageable(int page, int size, String sort, String direction) {

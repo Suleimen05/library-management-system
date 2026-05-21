@@ -2,13 +2,13 @@ package com.yeldossuly.suleimen.librarymanagement.service;
 
 import com.yeldossuly.suleimen.librarymanagement.dto.CategoryDto;
 import com.yeldossuly.suleimen.librarymanagement.entity.Category;
+import com.yeldossuly.suleimen.librarymanagement.exception.YeldossulySuleimenDuplicateResourceException;
+import com.yeldossuly.suleimen.librarymanagement.exception.YeldossulySuleimenResourceNotFoundException;
 import com.yeldossuly.suleimen.librarymanagement.mapper.YeldossulySuleimenCategoryMapper;
 import com.yeldossuly.suleimen.librarymanagement.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -34,7 +34,7 @@ public class YeldossulySuleimenCategoryService {
     @Transactional
     public CategoryDto createCategory(CategoryDto request) {
         if (categoryRepository.existsByNameIgnoreCase(request.name())) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Category with this name already exists");
+            throw new YeldossulySuleimenDuplicateResourceException("Category with this name already exists");
         }
 
         Category category = categoryMapper.toEntity(request);
@@ -48,7 +48,7 @@ public class YeldossulySuleimenCategoryService {
         categoryRepository.findByNameIgnoreCase(request.name())
                 .filter(existingCategory -> !existingCategory.getId().equals(id))
                 .ifPresent(existingCategory -> {
-                    throw new ResponseStatusException(HttpStatus.CONFLICT, "Category with this name already exists");
+                    throw new YeldossulySuleimenDuplicateResourceException("Category with this name already exists");
                 });
 
         categoryMapper.updateEntity(category, request);
@@ -63,6 +63,6 @@ public class YeldossulySuleimenCategoryService {
 
     private Category findCategory(Long id) {
         return categoryRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found"));
+                .orElseThrow(() -> new YeldossulySuleimenResourceNotFoundException("Category not found"));
     }
 }
