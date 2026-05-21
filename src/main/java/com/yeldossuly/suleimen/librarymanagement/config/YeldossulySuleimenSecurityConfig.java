@@ -44,6 +44,7 @@ public class YeldossulySuleimenSecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/api/authors/**", "/api/categories/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/books/*/borrow", "/api/books/*/reserve").hasRole("READER")
                         .requestMatchers(HttpMethod.PUT, "/api/borrowings/**", "/api/reservations/**").hasAnyRole("LIBRARIAN", "ADMIN")
+                        .requestMatchers("/api/reports/**").hasAnyRole("LIBRARIAN", "ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/users/**").authenticated()
                         .anyRequest().authenticated()
                 )

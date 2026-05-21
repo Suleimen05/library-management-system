@@ -32,6 +32,7 @@ public class YeldossulySuleimenFileStorageService {
     private final FileResourceRepository fileResourceRepository;
     private final BookRepository bookRepository;
     private final YeldossulySuleimenFileResourceMapper fileResourceMapper;
+    private final YeldossulySuleimenAsyncService asyncService;
 
     @Value("${app.file.upload-dir}")
     private String uploadDir;
@@ -64,7 +65,10 @@ public class YeldossulySuleimenFileStorageService {
             fileResource.setUploadedAt(LocalDateTime.now());
             fileResource.setBook(book);
 
-            return fileResourceMapper.toDto(fileResourceRepository.save(fileResource));
+            FileResource savedFile = fileResourceRepository.save(fileResource);
+            asyncService.processUploadedFile(savedFile.getId(), savedFile.getOriginalName());
+
+            return fileResourceMapper.toDto(savedFile);
         } catch (IOException exception) {
             throw new YeldossulySuleimenBadRequestException("Could not store file");
         }

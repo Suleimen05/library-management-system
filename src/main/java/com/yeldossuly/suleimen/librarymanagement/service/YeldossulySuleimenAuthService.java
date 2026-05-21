@@ -29,6 +29,7 @@ public class YeldossulySuleimenAuthService {
     private final PasswordEncoder passwordEncoder;
     private final YeldossulySuleimenUserMapper userMapper;
     private final YeldossulySuleimenJwtUtil jwtUtil;
+    private final YeldossulySuleimenAsyncService asyncService;
 
     @Transactional
     public UserResponseDto register(AuthRegisterRequestDto request) {
@@ -45,7 +46,10 @@ public class YeldossulySuleimenAuthService {
         user.setPassword(passwordEncoder.encode(request.password()));
         user.setRoles(Set.of(readerRole));
 
-        return userMapper.toDto(userRepository.save(user));
+        User savedUser = userRepository.save(user);
+        asyncService.sendWelcomeMessage(savedUser.getEmail());
+
+        return userMapper.toDto(savedUser);
     }
 
     @Transactional(readOnly = true)

@@ -238,7 +238,7 @@ File upload/download:
 
 Async processes:
 
-- Planned with `@Async` and `CompletableFuture`.
+- Done with `@Async` and `CompletableFuture`.
 
 Swagger UI:
 
@@ -404,26 +404,26 @@ Already committed:
 11. `Add user registration`
 12. `Add JWT authentication`
 13. `Add role based security`
+14. `Add file upload and download`
+15. `Add async services`
 
-Current code step:
+Latest code step:
 
-- Step 13 from the main plan: `Add file upload and download`
-- Added `YeldossulySuleimenFileStorageService`
-- Added `YeldossulySuleimenFileController`
-- Implemented `POST /api/books/{bookId}/files`
-- Implemented `GET /api/books/{bookId}/files`
-- Implemented `GET /api/files/{id}/download`
-- Saved uploaded file metadata in `FileResource`
-- Added `app.file.upload-dir`
-- Ignored local `uploads/` folder in Git.
-- Protected file upload for `LIBRARIAN` and `ADMIN`.
+- Step 14 from the main plan: `Add async services`
+- Enabled async processing with `@EnableAsync`.
+- Added `YeldossulySuleimenAsyncService`.
+- Added async welcome process after user registration.
+- Added async file processing after upload.
+- Added async report endpoint with `CompletableFuture`.
+- Implemented `GET /api/reports/summary`.
+- Protected report endpoint for `LIBRARIAN` and `ADMIN`.
 
 Next planned step after commit:
 
-- Step 14: `Add async services`
-- Enable async processing.
-- Add 2-3 compact async methods using `@Async` and `CompletableFuture`.
-- Keep the async examples simple and easy to explain.
+- Step 15: `Add Swagger documentation`
+- Add Springdoc dependency.
+- Configure Swagger UI.
+- Add basic API metadata.
 
 Latest verification:
 
