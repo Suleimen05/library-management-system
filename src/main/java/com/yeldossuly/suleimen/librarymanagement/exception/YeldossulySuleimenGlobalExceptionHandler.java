@@ -1,6 +1,7 @@
 package com.yeldossuly.suleimen.librarymanagement.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -14,6 +15,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 @RestControllerAdvice
+@Slf4j
 public class YeldossulySuleimenGlobalExceptionHandler {
 
     @ExceptionHandler(YeldossulySuleimenResourceNotFoundException.class)
@@ -21,6 +23,7 @@ public class YeldossulySuleimenGlobalExceptionHandler {
             YeldossulySuleimenResourceNotFoundException exception,
             HttpServletRequest request
     ) {
+        log.warn("Not found error on {}: {}", request.getRequestURI(), exception.getMessage());
         return buildResponse(HttpStatus.NOT_FOUND, exception.getMessage(), request, null);
     }
 
@@ -29,6 +32,7 @@ public class YeldossulySuleimenGlobalExceptionHandler {
             YeldossulySuleimenDuplicateResourceException exception,
             HttpServletRequest request
     ) {
+        log.warn("Duplicate resource error on {}: {}", request.getRequestURI(), exception.getMessage());
         return buildResponse(HttpStatus.CONFLICT, exception.getMessage(), request, null);
     }
 
@@ -37,6 +41,7 @@ public class YeldossulySuleimenGlobalExceptionHandler {
             YeldossulySuleimenBadRequestException exception,
             HttpServletRequest request
     ) {
+        log.warn("Bad request on {}: {}", request.getRequestURI(), exception.getMessage());
         return buildResponse(HttpStatus.BAD_REQUEST, exception.getMessage(), request, null);
     }
 
@@ -45,6 +50,7 @@ public class YeldossulySuleimenGlobalExceptionHandler {
             YeldossulySuleimenUnauthorizedException exception,
             HttpServletRequest request
     ) {
+        log.warn("Unauthorized request on {}: {}", request.getRequestURI(), exception.getMessage());
         return buildResponse(HttpStatus.UNAUTHORIZED, exception.getMessage(), request, null);
     }
 
@@ -57,6 +63,7 @@ public class YeldossulySuleimenGlobalExceptionHandler {
         exception.getBindingResult().getFieldErrors()
                 .forEach(error -> validationErrors.put(error.getField(), error.getDefaultMessage()));
 
+        log.warn("Validation failed on {}: {}", request.getRequestURI(), validationErrors);
         return buildResponse(HttpStatus.BAD_REQUEST, "Validation failed", request, validationErrors);
     }
 
@@ -68,6 +75,7 @@ public class YeldossulySuleimenGlobalExceptionHandler {
             Exception exception,
             HttpServletRequest request
     ) {
+        log.warn("Invalid request on {}: {}", request.getRequestURI(), exception.getMessage());
         return buildResponse(HttpStatus.BAD_REQUEST, exception.getMessage(), request, null);
     }
 
@@ -76,6 +84,7 @@ public class YeldossulySuleimenGlobalExceptionHandler {
             Exception exception,
             HttpServletRequest request
     ) {
+        log.error("Unexpected error on {}", request.getRequestURI(), exception);
         return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected server error", request, null);
     }
 

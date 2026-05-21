@@ -246,7 +246,7 @@ Swagger UI:
 
 Logging:
 
-- Planned with request logging filter/interceptor and service action logs.
+- Done with request logging filter, error logs, and service action logs.
 
 Docker:
 
@@ -407,22 +407,24 @@ Already committed:
 14. `Add file upload and download`
 15. `Add async services`
 16. `Add Swagger documentation`
+17. `Add request logging`
 
 Latest code step:
 
-- Step 15 from the main plan: `Add Swagger documentation`
-- Added Springdoc OpenAPI dependency.
-- Added `YeldossulySuleimenOpenApiConfig`.
-- Added API title, version, and description.
-- Added JWT bearer authorization scheme.
-- Allowed `/swagger-ui/**`, `/swagger-ui.html`, and `/v3/api-docs/**` in security config.
+- Step 16 from the main plan: `Add request logging`
+- Added `YeldossulySuleimenRequestLoggingFilter`.
+- Logged HTTP method, path, response status, and request duration.
+- Added warning/error logs in `YeldossulySuleimenGlobalExceptionHandler`.
+- Added important action logs for book create/update/delete.
+- Added important action logs for borrow and return actions.
 
 Next planned step after commit:
 
-- Step 16: `Add request logging`
-- Log incoming requests.
-- Log errors.
-- Log important service actions.
+- Step 17: `Add Dockerfile and docker compose`
+- Add multistage Dockerfile.
+- Add docker-compose with app and PostgreSQL.
+- Add health check.
+- Add useful environment variables.
 
 Latest verification:
 

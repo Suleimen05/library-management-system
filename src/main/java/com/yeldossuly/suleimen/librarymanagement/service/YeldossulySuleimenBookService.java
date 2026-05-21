@@ -13,6 +13,7 @@ import com.yeldossuly.suleimen.librarymanagement.repository.BookRepository;
 import com.yeldossuly.suleimen.librarymanagement.repository.CategoryRepository;
 import jakarta.persistence.criteria.JoinType;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +26,7 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class YeldossulySuleimenBookService {
 
     private static final int MAX_PAGE_SIZE = 50;
@@ -74,7 +76,10 @@ public class YeldossulySuleimenBookService {
         Category category = findCategory(request.categoryId());
         Book book = bookMapper.toEntity(request, author, category);
 
-        return bookMapper.toDto(bookRepository.save(book));
+        Book savedBook = bookRepository.save(book);
+        log.info("Book created with id {} and title {}", savedBook.getId(), savedBook.getTitle());
+
+        return bookMapper.toDto(savedBook);
     }
 
     @Transactional
@@ -90,13 +95,17 @@ public class YeldossulySuleimenBookService {
         Category category = findCategory(request.categoryId());
         bookMapper.updateEntity(book, request, author, category);
 
-        return bookMapper.toDto(bookRepository.save(book));
+        Book savedBook = bookRepository.save(book);
+        log.info("Book updated with id {}", savedBook.getId());
+
+        return bookMapper.toDto(savedBook);
     }
 
     @Transactional
     public void deleteBook(Long id) {
         Book book = findBook(id);
         bookRepository.delete(book);
+        log.info("Book deleted with id {}", id);
     }
 
     private Book findBook(Long id) {

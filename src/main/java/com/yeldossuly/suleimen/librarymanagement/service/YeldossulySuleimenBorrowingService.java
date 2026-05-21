@@ -12,6 +12,7 @@ import com.yeldossuly.suleimen.librarymanagement.repository.BookRepository;
 import com.yeldossuly.suleimen.librarymanagement.repository.BorrowingRepository;
 import com.yeldossuly.suleimen.librarymanagement.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class YeldossulySuleimenBorrowingService {
 
     private static final int BORROW_DAYS = 14;
@@ -47,7 +49,10 @@ public class YeldossulySuleimenBorrowingService {
         borrowing.setDueDate(LocalDate.now().plusDays(BORROW_DAYS));
         borrowing.setStatus(BorrowingStatus.BORROWED);
 
-        return borrowingMapper.toDto(borrowingRepository.save(borrowing));
+        Borrowing savedBorrowing = borrowingRepository.save(borrowing);
+        log.info("Book {} borrowed by user {}", bookId, userId);
+
+        return borrowingMapper.toDto(savedBorrowing);
     }
 
     @Transactional
@@ -64,7 +69,10 @@ public class YeldossulySuleimenBorrowingService {
         borrowing.setReturnedAt(LocalDate.now());
         borrowing.setStatus(BorrowingStatus.RETURNED);
 
-        return borrowingMapper.toDto(borrowingRepository.save(borrowing));
+        Borrowing savedBorrowing = borrowingRepository.save(borrowing);
+        log.info("Borrowing {} returned", borrowingId);
+
+        return borrowingMapper.toDto(savedBorrowing);
     }
 
     @Transactional(readOnly = true)
