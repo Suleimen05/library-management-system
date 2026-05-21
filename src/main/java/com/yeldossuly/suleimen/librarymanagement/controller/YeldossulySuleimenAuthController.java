@@ -1,6 +1,8 @@
 package com.yeldossuly.suleimen.librarymanagement.controller;
 
+import com.yeldossuly.suleimen.librarymanagement.dto.AuthLoginRequestDto;
 import com.yeldossuly.suleimen.librarymanagement.dto.AuthRegisterRequestDto;
+import com.yeldossuly.suleimen.librarymanagement.dto.AuthResponseDto;
 import com.yeldossuly.suleimen.librarymanagement.dto.UserResponseDto;
 import com.yeldossuly.suleimen.librarymanagement.service.YeldossulySuleimenAuthService;
 import jakarta.validation.Valid;
@@ -22,5 +24,10 @@ public class YeldossulySuleimenAuthController {
     @PostMapping("/register")
     public ResponseEntity<UserResponseDto> register(@Valid @RequestBody AuthRegisterRequestDto request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(authService.register(request));
+    }
+
+    @PostMapping("/login")
+    public AuthResponseDto login(@Valid @RequestBody AuthLoginRequestDto request) {
+        return authService.login(request);
     }
 }

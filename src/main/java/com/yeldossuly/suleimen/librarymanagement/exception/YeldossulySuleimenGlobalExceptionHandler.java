@@ -40,6 +40,14 @@ public class YeldossulySuleimenGlobalExceptionHandler {
         return buildResponse(HttpStatus.BAD_REQUEST, exception.getMessage(), request, null);
     }
 
+    @ExceptionHandler(YeldossulySuleimenUnauthorizedException.class)
+    public ResponseEntity<YeldossulySuleimenApiError> handleUnauthorized(
+            YeldossulySuleimenUnauthorizedException exception,
+            HttpServletRequest request
+    ) {
+        return buildResponse(HttpStatus.UNAUTHORIZED, exception.getMessage(), request, null);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<YeldossulySuleimenApiError> handleValidation(
             MethodArgumentNotValidException exception,

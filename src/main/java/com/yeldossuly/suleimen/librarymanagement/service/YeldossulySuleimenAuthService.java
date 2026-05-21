@@ -1,14 +1,18 @@
 package com.yeldossuly.suleimen.librarymanagement.service;
 
+import com.yeldossuly.suleimen.librarymanagement.dto.AuthLoginRequestDto;
 import com.yeldossuly.suleimen.librarymanagement.dto.AuthRegisterRequestDto;
+import com.yeldossuly.suleimen.librarymanagement.dto.AuthResponseDto;
 import com.yeldossuly.suleimen.librarymanagement.dto.UserResponseDto;
 import com.yeldossuly.suleimen.librarymanagement.entity.Role;
 import com.yeldossuly.suleimen.librarymanagement.entity.User;
 import com.yeldossuly.suleimen.librarymanagement.entity.enums.UserRole;
 import com.yeldossuly.suleimen.librarymanagement.exception.YeldossulySuleimenDuplicateResourceException;
+import com.yeldossuly.suleimen.librarymanagement.exception.YeldossulySuleimenUnauthorizedException;
 import com.yeldossuly.suleimen.librarymanagement.mapper.YeldossulySuleimenUserMapper;
 import com.yeldossuly.suleimen.librarymanagement.repository.RoleRepository;
 import com.yeldossuly.suleimen.librarymanagement.repository.UserRepository;
+import com.yeldossuly.suleimen.librarymanagement.security.YeldossulySuleimenJwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,6 +28,7 @@ public class YeldossulySuleimenAuthService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final YeldossulySuleimenUserMapper userMapper;
+    private final YeldossulySuleimenJwtUtil jwtUtil;
 
     @Transactional
     public UserResponseDto register(AuthRegisterRequestDto request) {
@@ -41,5 +46,21 @@ public class YeldossulySuleimenAuthService {
         user.setRoles(Set.of(readerRole));
 
         return userMapper.toDto(userRepository.save(user));
+    }
+
+    @Transactional(readOnly = true)
+    public AuthResponseDto login(AuthLoginRequestDto request) {
+        User user = userRepository.findByEmail(request.email())
+                .orElseThrow(() -> new YeldossulySuleimenUnauthorizedException("Invalid email or password"));
+
+        if (!passwordEncoder.matches(request.password(), user.getPassword())) {
+            throw new YeldossulySuleimenUnauthorizedException("Invalid email or password");
+        }
+
+        return new AuthResponseDto(
+                jwtUtil.generateToken(user),
+                "Bearer",
+                userMapper.toDto(user)
+        );
     }
 }
