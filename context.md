@@ -242,7 +242,7 @@ Async processes:
 
 Swagger UI:
 
-- Planned with Springdoc OpenAPI.
+- Done with Springdoc OpenAPI.
 
 Logging:
 
@@ -406,24 +406,23 @@ Already committed:
 13. `Add role based security`
 14. `Add file upload and download`
 15. `Add async services`
+16. `Add Swagger documentation`
 
 Latest code step:
 
-- Step 14 from the main plan: `Add async services`
-- Enabled async processing with `@EnableAsync`.
-- Added `YeldossulySuleimenAsyncService`.
-- Added async welcome process after user registration.
-- Added async file processing after upload.
-- Added async report endpoint with `CompletableFuture`.
-- Implemented `GET /api/reports/summary`.
-- Protected report endpoint for `LIBRARIAN` and `ADMIN`.
+- Step 15 from the main plan: `Add Swagger documentation`
+- Added Springdoc OpenAPI dependency.
+- Added `YeldossulySuleimenOpenApiConfig`.
+- Added API title, version, and description.
+- Added JWT bearer authorization scheme.
+- Allowed `/swagger-ui/**`, `/swagger-ui.html`, and `/v3/api-docs/**` in security config.
 
 Next planned step after commit:
 
-- Step 15: `Add Swagger documentation`
-- Add Springdoc dependency.
-- Configure Swagger UI.
-- Add basic API metadata.
+- Step 16: `Add request logging`
+- Log incoming requests.
+- Log errors.
+- Log important service actions.
 
 Latest verification:
 
