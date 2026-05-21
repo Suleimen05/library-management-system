@@ -179,6 +179,7 @@ Authentication endpoints:
 File endpoints:
 
 - `POST /api/books/{bookId}/files`
+- `GET /api/books/{bookId}/files`
 - `GET /api/files/{id}/download`
 
 ## Required Criteria Mapping
@@ -221,19 +222,19 @@ Validation:
 
 Exception handling:
 
-- Planned as a separate step using a global exception handler.
+- Done with custom exceptions and a global exception handler.
 
 Pagination, sorting, search, filtering:
 
-- Planned for `GET /api/books`.
+- Done for `GET /api/books`.
 
 Spring Security:
 
-- Planned with registration, login, JWT, protected endpoints.
+- Done with registration, login, JWT, protected endpoints, and role checks.
 
 File upload/download:
 
-- Planned with `FileResource` entity and file endpoints.
+- Done with `FileResource` entity, upload endpoint, file list endpoint, and download endpoint.
 
 Async processes:
 
@@ -395,33 +396,34 @@ Already committed:
 3. `Add repositories`
 4. `Add DTOs and mapper classes`
 5. `Implement book CRUD`
+6. `Add project context plan`
+7. `Add pagination search sorting and filtering`
+8. `Implement author and category CRUD`
+9. `Add borrowing and reservation logic`
+10. `Add validation and exception handling`
+11. `Add user registration`
+12. `Add JWT authentication`
+13. `Add role based security`
 
-Latest committed code step:
+Current code step:
 
-- Step 5: `Implement book CRUD`
-- Commit hash: `e550552`
-- Added `YeldossulySuleimenBookService`
-- Added `YeldossulySuleimenBookController`
-- Implemented `GET /api/books`
-- Implemented `GET /api/books/{id}`
-- Implemented `POST /api/books`
-- Implemented `PUT /api/books/{id}`
-- Implemented `DELETE /api/books/{id}`
-- Used DTOs and mapper for book requests and responses.
-- Used `@PathVariable` for book id.
-- Used `@Valid` for book request validation.
-- Added checks for not found book, author, category, and duplicate ISBN.
+- Step 13 from the main plan: `Add file upload and download`
+- Added `YeldossulySuleimenFileStorageService`
+- Added `YeldossulySuleimenFileController`
+- Implemented `POST /api/books/{bookId}/files`
+- Implemented `GET /api/books/{bookId}/files`
+- Implemented `GET /api/files/{id}/download`
+- Saved uploaded file metadata in `FileResource`
+- Added `app.file.upload-dir`
+- Ignored local `uploads/` folder in Git.
+- Protected file upload for `LIBRARIAN` and `ADMIN`.
 
-Current local documentation update:
+Next planned step after commit:
 
-- `context.md`
-
-Next planned step:
-
-- Step 6: `Add pagination search sorting and filtering`
-- Improve `GET /api/books`
-- Add query parameters: `page`, `size`, `sort`, `direction`, `search`, `categoryId`, `available`
-- Use Spring Data `Pageable`, `Sort`, and `JpaSpecificationExecutor`
+- Step 14: `Add async services`
+- Enable async processing.
+- Add 2-3 compact async methods using `@Async` and `CompletableFuture`.
+- Keep the async examples simple and easy to explain.
 
 Latest verification:
 

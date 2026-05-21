@@ -34,7 +34,9 @@ public class YeldossulySuleimenSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/books/**", "/api/authors/**", "/api/categories/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/files/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/books").hasAnyRole("LIBRARIAN", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/books/*/files").hasAnyRole("LIBRARIAN", "ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/books/**").hasAnyRole("LIBRARIAN", "ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/books/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/authors", "/api/categories").hasAnyRole("LIBRARIAN", "ADMIN")
