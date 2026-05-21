@@ -250,7 +250,7 @@ Logging:
 
 Docker:
 
-- Planned with Dockerfile, docker-compose, PostgreSQL service, health check.
+- Done with multistage Dockerfile, docker-compose, PostgreSQL service, health checks, volumes, and log rotation.
 
 Commit history:
 
@@ -408,23 +408,28 @@ Already committed:
 15. `Add async services`
 16. `Add Swagger documentation`
 17. `Add request logging`
+18. `Add Dockerfile and docker compose`
 
 Latest code step:
 
-- Step 16 from the main plan: `Add request logging`
-- Added `YeldossulySuleimenRequestLoggingFilter`.
-- Logged HTTP method, path, response status, and request duration.
-- Added warning/error logs in `YeldossulySuleimenGlobalExceptionHandler`.
-- Added important action logs for book create/update/delete.
-- Added important action logs for borrow and return actions.
+- Step 17 from the main plan: `Add Dockerfile and docker compose`
+- Added multistage `Dockerfile`.
+- Added `.dockerignore`.
+- Added `docker-compose.yml` with app and PostgreSQL services.
+- Added PostgreSQL health check.
+- Added application health check through `/v3/api-docs`.
+- Added named volumes for PostgreSQL data and uploaded files.
+- Added Docker log rotation.
+- Added JVM memory optimization through `JAVA_OPTS`.
 
 Next planned step after commit:
 
-- Step 17: `Add Dockerfile and docker compose`
-- Add multistage Dockerfile.
-- Add docker-compose with app and PostgreSQL.
-- Add health check.
-- Add useful environment variables.
+- Step 18: `Final cleanup and README update`
+- Update README with project description.
+- Add run instructions.
+- Add endpoint list.
+- Add default roles explanation.
+- Verify tests.
 
 Latest verification:
 
