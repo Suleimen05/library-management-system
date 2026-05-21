@@ -252,6 +252,10 @@ Docker:
 
 - Done with multistage Dockerfile, docker-compose, PostgreSQL service, health checks, volumes, and log rotation.
 
+README:
+
+- Done with project overview, Docker run instructions, endpoint list, roles, Swagger, and test commands.
+
 Commit history:
 
 - The project is developed through meaningful commits.
@@ -409,27 +413,23 @@ Already committed:
 16. `Add Swagger documentation`
 17. `Add request logging`
 18. `Add Dockerfile and docker compose`
+19. `Final cleanup and README update`
 
 Latest code step:
 
-- Step 17 from the main plan: `Add Dockerfile and docker compose`
-- Added multistage `Dockerfile`.
-- Added `.dockerignore`.
-- Added `docker-compose.yml` with app and PostgreSQL services.
-- Added PostgreSQL health check.
-- Added application health check through `/v3/api-docs`.
-- Added named volumes for PostgreSQL data and uploaded files.
-- Added Docker log rotation.
-- Added JVM memory optimization through `JAVA_OPTS`.
+- Step 18 from the main plan: `Final cleanup and README update`
+- Updated `README.md` with project overview.
+- Added Docker run instructions.
+- Added local run instructions.
+- Added test instructions.
+- Added endpoint list.
+- Added role explanation.
+- Added Swagger UI link.
+- Added Docker services explanation.
 
 Next planned step after commit:
 
-- Step 18: `Final cleanup and README update`
-- Update README with project description.
-- Add run instructions.
-- Add endpoint list.
-- Add default roles explanation.
-- Verify tests.
+- Final manual check and defense preparation.
 
 Latest verification:
 
